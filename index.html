@@ -3,140 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Латинские карточки — Анатомия</title>
+<title>Латинские карточки</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #ffe4ec 0%, #ffc2d9 50%, #f8a5c2 100%);
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 20px; color: #5a2a3e;
-}
-h1 { font-size: 1.3rem; margin-bottom: 5px; color: #c2185b; text-align:center; }
-.counter { font-size: 0.95rem; color: #d81b60; margin-bottom: 15px; font-weight: 600; }
-.scene { width: 100%; max-width: 520px; height: 340px; perspective: 1200px; }
-.card {
-  width: 100%; height: 100%; position: relative;
-  transform-style: preserve-3d; transition: transform 0.6s;
-  cursor: pointer; border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(194, 24, 91, 0.3);
-}
-.card.flipped { transform: rotateY(180deg); }
-.face {
-  position: absolute; width: 100%; height: 100%;
-  backface-visibility: hidden; border-radius: 20px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 25px; text-align: center;
-}
-.front {
-  background: linear-gradient(145deg, #fff0f5, #ffd6e7);
-  border: 3px solid #f48fb1;
-}
-.back {
-  background: linear-gradient(145deg, #ffd6e7, #ffb3d1);
-  border: 3px solid #ec407a;
-  transform: rotateY(180deg);
-}
-.front .translation {
-  font-size: 2rem; font-weight: 700; color: #ad1457; line-height: 1.2;
-}
-.back .term {
-  font-size: 1.7rem; font-weight: 700; color: #880e4f; margin-bottom: 12px; line-height: 1.2;
-}
-.back .declension {
-  font-size: 0.95rem; color: #6a1b3e; line-height: 1.5; font-style: italic;
-}
-.hint { font-size: 0.85rem; color: #d81b60; margin-top: 18px; opacity: 0.7; }
-.controls {
-  display: flex; gap: 8px; margin-top: 22px;
-  flex-wrap: wrap; justify-content: center;
-}
-button {
-  padding: 11px 18px; border: none; border-radius: 14px;
-  font-size: 0.92rem; font-weight: 600; cursor: pointer;
-  transition: 0.2s; color: #fff;
-}
-button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
-button:active { transform: translateY(0); }
-.nav-btn { background: #ec407a; }
-.nav-btn:hover { background: #d81b60; }
-.know-btn {
-  background: linear-gradient(135deg, #f06292, #e91e63);
-  padding: 11px 22px; font-size: 0.95rem;
-}
-.know-btn:hover { background: linear-gradient(135deg, #ec407a, #c2185b); }
-.shuffle { background: #ba68c8; }
-.shuffle:hover { background: #ab47bc; }
-.list-btn { background: #f48fb1; color: #6a1b3e; }
-.list-btn:hover { background: #f06292; color: #fff; }
-.progress-bar {
-  width: 100%; max-width: 520px; height: 8px;
-  background: #ffd6e7; border-radius: 4px; margin-top: 18px; overflow: hidden;
-}
-.progress-fill {
-  height: 100%; background: linear-gradient(90deg, #f06292, #c2185b);
-  transition: width 0.3s;
-}
-.modal {
-  display: none; position: fixed; inset: 0;
-  background: rgba(90, 42, 62, 0.6);
-  z-index: 100; align-items: center; justify-content: center;
-  padding: 20px;
-}
-.modal.open { display: flex; }
-.modal-content {
-  background: #fff0f5; border-radius: 20px;
-  width: 100%; max-width: 560px; max-height: 85vh;
-  display: flex; flex-direction: column;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  border: 3px solid #f48fb1;
-}
-.modal-header {
-  padding: 18px 22px; border-bottom: 2px solid #ffd6e7;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.modal-header h2 { font-size: 1.15rem; color: #ad1457; }
-.close-btn {
-  background: transparent; color: #ad1457; font-size: 1.5rem;
-  padding: 0 8px; line-height: 1;
-}
-.close-btn:hover { color: #d81b60; transform: none; box-shadow: none; }
-.modal-tabs { display: flex; border-bottom: 2px solid #ffd6e7; }
-.tab {
-  flex: 1; padding: 12px; text-align: center; cursor: pointer;
-  font-weight: 600; color: #d81b60; background: transparent;
-  border: none; border-radius: 0; font-size: 0.9rem;
-}
-.tab.active { background: #ffd6e7; color: #880e4f; }
-.tab:hover:not(.active) { background: #ffe4ec; box-shadow: none; transform: none; }
-.modal-body { overflow-y: auto; padding: 16px 22px; flex: 1; }
-.modal-body ul { list-style: none; }
-.modal-body li {
-  padding: 10px 12px; margin-bottom: 6px;
-  background: #fff; border-radius: 10px;
-  border-left: 4px solid #f48fb1;
-  font-size: 0.9rem;
-}
-.modal-body li .ru { font-weight: 600; color: #880e4f; }
-.modal-body li .la { color: #6a1b3e; font-size: 0.85rem; margin-top: 3px; font-style: italic; }
-.empty-msg { text-align: center; color: #d81b60; padding: 30px; font-style: italic; }
-.stats { padding: 10px 22px; font-size: 0.85rem; color: #ad1457; text-align: center; }
-@media (max-width: 480px) {
-  .front .translation { font-size: 1.5rem; }
-  .back .term { font-size: 1.3rem; }
-  .back .declension { font-size: 0.85rem; }
-  .controls { gap: 6px; }
-  button { padding: 9px 14px; font-size: 0.85rem; }
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#ffe4ec,#ffc2d9 50%,#f8a5c2);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#5a2a3e}
+h1{font-size:1.3rem;margin-bottom:5px;color:#c2185b;text-align:center}
+.counter{font-size:.95rem;color:#d81b60;margin-bottom:15px;font-weight:600}
+.scene{width:100%;max-width:520px;height:340px;perspective:1200px}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s;cursor:pointer;border-radius:20px;box-shadow:0 12px 35px rgba(194,24,91,.3)}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center}
+.front{background:linear-gradient(145deg,#fff0f5,#ffd6e7);border:3px solid #f48fb1}
+.back{background:linear-gradient(145deg,#ffd6e7,#ffb3d1);border:3px solid #ec407a;transform:rotateY(180deg)}
+.front .translation{font-size:2rem;font-weight:700;color:#ad1457;line-height:1.2}
+.back .term{font-size:1.7rem;font-weight:700;color:#880e4f;margin-bottom:12px;line-height:1.2}
+.back .declension{font-size:.95rem;color:#6a1b3e;line-height:1.5;font-style:italic}
+.hint{font-size:.85rem;color:#d81b60;margin-top:18px;opacity:.7}
+.controls{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+button{padding:11px 18px;border:none;border-radius:14px;font-size:.92rem;font-weight:600;cursor:pointer;transition:.2s;color:#fff}
+button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,.2)}
+.nav-btn{background:#ec407a}.nav-btn:hover{background:#d81b60}
+.know-btn{background:linear-gradient(135deg,#f06292,#e91e63);padding:11px 22px;font-size:.95rem}
+.shuffle{background:#ba68c8}.shuffle:hover{background:#ab47bc}
+.list-btn{background:#f48fb1;color:#6a1b3e}.list-btn:hover{background:#f06292;color:#fff}
+.progress-bar{width:100%;max-width:520px;height:8px;background:#ffd6e7;border-radius:4px;margin-top:18px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f06292,#c2185b);transition:width .3s}
+.modal{display:none;position:fixed;inset:0;background:rgba(90,42,62,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-content{background:#fff0f5;border-radius:20px;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.3);border:3px solid #f48fb1}
+.modal-header{padding:18px 22px;border-bottom:2px solid #ffd6e7;display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-size:1.15rem;color:#ad1457}
+.close-btn{background:transparent;color:#ad1457;font-size:1.5rem;padding:0 8px;line-height:1}
+.modal-tabs{display:flex;border-bottom:2px solid #ffd6e7}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:600;color:#d81b60;background:transparent;border:none;border-radius:0;font-size:.9rem}
+.tab.active{background:#ffd6e7;color:#880e4f}
+.modal-body{overflow-y:auto;padding:16px 22px;flex:1}
+.modal-body ul{list-style:none}
+.modal-body li{padding:10px 12px;margin-bottom:6px;background:#fff;border-radius:10px;border-left:4px solid #f48fb1;font-size:.9rem}
+.modal-body li .ru{font-weight:600;color:#880e4f}
+.modal-body li .la{color:#6a1b3e;font-size:.85rem;margin-top:3px;font-style:italic}
+.empty-msg{text-align:center;color:#d81b60;padding:30px;font-style:italic}
+.stats{padding:10px 22px;font-size:.85rem;color:#ad1457;text-align:center}
+@media(max-width:480px){.front .translation{font-size:1.5rem}.back .term{font-size:1.3rem}.back .declension{font-size:.85rem}button{padding:9px 14px;font-size:.85rem}}
 </style>
 </head>
 <body>
 <h1>🌸 Латинские анатомические карточки</h1>
 <div class="counter" id="counter">1 / N</div>
-
 <div class="scene">
   <div class="card" id="card" onclick="flip()">
     <div class="face front">
@@ -149,9 +62,7 @@ button:active { transform: translateY(0); }
     </div>
   </div>
 </div>
-
 <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-
 <div class="controls">
   <button class="nav-btn" onclick="prev()">← Назад</button>
   <button class="know-btn" onclick="markKnown()">Знаю, блять ✅</button>
@@ -159,15 +70,11 @@ button:active { transform: translateY(0); }
 </div>
 <div class="controls" style="margin-top:10px">
   <button class="shuffle" onclick="shuffle()">🔀 Перемешать</button>
-  <button class="list-btn" onclick="openModal()">📋 Списки (знаю / не знаю)</button>
+  <button class="list-btn" onclick="openModal()">📋 Списки</button>
 </div>
-
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-content">
-    <div class="modal-header">
-      <h2>📋 Мои карточки</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
-    </div>
+    <div class="modal-header"><h2>📋 Мои карточки</h2><button class="close-btn" onclick="closeModal()">×</button></div>
     <div class="modal-tabs">
       <button class="tab active" id="tabUnknown" onclick="switchTab('unknown')">🤔 Не знаю (<span id="cntUnknown">0</span>)</button>
       <button class="tab" id="tabKnown" onclick="switchTab('known')">✅ Знаю (<span id="cntKnown">0</span>)</button>
@@ -176,140 +83,214 @@ button:active { transform: translateY(0); }
     <div class="stats" id="stats"></div>
   </div>
 </div>
-
 <script>
-const allCards = [
-  {t:"ala, ae f", tr:"крыло", d:"ala, alae f — I склонение", g:"I скл., f"},
-  {t:"aorta, ae f", tr:"аорта", d:"aorta, aortae f — I склонение", g:"I скл., f"},
-  {t:"arteria, ae f", tr:"артерия", d:"arteria, arteriae f — I склонение", g:"I скл., f"},
-  {t:"clavicula, ae f", tr:"ключица", d:"clavicula, claviculae f — I склонение", g:"I скл., f"},
-  {t:"concha, ae f", tr:"раковина", d:"concha, conchae f — I склонение", g:"I скл., f"},
-  {t:"costa, ae f", tr:"ребро", d:"costa, costae f — I склонение", g:"I скл., f"},
-  {t:"crista, ae f", tr:"гребень", d:"crista, cristae f — I склонение", g:"I скл., f"},
-  {t:"fissura, ae f", tr:"щель", d:"fissura, fissurae f — I склонение", g:"I скл., f"},
-  {t:"fractura, ae f", tr:"перелом", d:"fractura, fracturae f — I склонение", g:"I скл., f"},
-  {t:"fossa, ae f", tr:"ямка удлинённой формы", d:"fossa, fossae f — I склонение", g:"I скл., f"},
-  {t:"fovea, ae f", tr:"ямка округлой формы", d:"fovea, foveae f — I склонение", g:"I скл., f"},
-  {t:"glandula, ae f", tr:"железа", d:"glandula, glandulae f — I склонение", g:"I скл., f"},
-  {t:"incisura, ae f", tr:"вырезка", d:"incisura, incisurae f — I склонение", g:"I скл., f"},
-  {t:"lamina, ae f", tr:"пластинка", d:"lamina, laminae f — I склонение", g:"I скл., f"},
-  {t:"lingua, ae f", tr:"язык", d:"lingua, linguae f — I склонение", g:"I скл., f"},
-  {t:"linea, ae f", tr:"линия", d:"linea, lineae f — I склонение", g:"I скл., f"},
-  {t:"mandibula, ae f", tr:"нижняя челюсть", d:"mandibula, mandibulae f — I склонение", g:"I скл., f"},
-  {t:"maxilla, ae f", tr:"верхняя челюсть", d:"maxilla, maxillae f — I склонение", g:"I скл., f"},
-  {t:"medulla, ae f", tr:"мозг, мозговое вещество", d:"medulla, medullae f — I склонение", g:"I скл., f"},
-  {t:"plica, ae f", tr:"складка", d:"plica, plicae f — I склонение", g:"I скл., f"},
-  {t:"scapula, ae f", tr:"лопатка", d:"scapula, scapulae f — I склонение", g:"I скл., f"},
-  {t:"spina, ae f", tr:"ость, шип", d:"spina, spinae f — I склонение", g:"I скл., f"},
-  {t:"sutura, ae f", tr:"шов", d:"sutura, suturae f — I склонение", g:"I скл., f"},
-  {t:"tibia, ae f", tr:"большеберцовая кость", d:"tibia, tibiae f — I склонение", g:"I скл., f"},
-  {t:"ulna, ae f", tr:"локтевая кость", d:"ulna, ulnae f — I склонение", g:"I скл., f"},
-  {t:"vagina, ae f", tr:"влагалище", d:"vagina, vaginae f — I склонение", g:"I скл., f"},
-  {t:"vena, ae f", tr:"вена", d:"vena, venae f — I склонение", g:"I скл., f"},
-  {t:"vertebra, ae f", tr:"позвонок", d:"vertebra, vertebrae f — I склонение", g:"I скл., f"},
-  {t:"vesica, ae f", tr:"пузырь", d:"vesica, vesicae f — I склонение", g:"I скл., f"},
-  {t:"angulus, i m", tr:"угол", d:"angulus, anguli m — II склонение", g:"II скл., m"},
-  {t:"digitus, i m", tr:"палец", d:"digitus, digiti m — II склонение", g:"II скл., m"},
-  {t:"fundus, i m", tr:"дно", d:"fundus, fundi m — II склонение", g:"II скл., m"},
-  {t:"gyrus, i m", tr:"извилина", d:"gyrus, gyri m — II склонение", g:"II скл., m"},
-  {t:"humerus, i m", tr:"плечевая кость", d:"humerus, humeri m — II склонение", g:"II скл., m"},
-  {t:"lobus, i m", tr:"доля", d:"lobus, lobi m — II склонение", g:"II скл., m"},
-  {t:"musculus, i m", tr:"мышца", d:"musculus, musculi m — II склонение", g:"II скл., m"},
-  {t:"nasus, i m", tr:"нос", d:"nasus, nasi m — II склонение", g:"II скл., m"},
-  {t:"nervus, i m", tr:"нерв", d:"nervus, nervi m — II склонение", g:"II скл., m"},
-  {t:"oculus, i m", tr:"глаз", d:"oculus, oculi m — II склонение", g:"II скл., m"},
-  {t:"radius, i m", tr:"лучевая кость", d:"radius, radii m — II склонение", g:"II скл., m"},
-  {t:"ramus, i m", tr:"ветвь", d:"ramus, rami m — II склонение", g:"II скл., m"},
-  {t:"sulcus, i m", tr:"борозда", d:"sulcus, sulci m — II склонение", g:"II скл., m"},
-  {t:"uterus, i m", tr:"матка", d:"uterus, uteri m — II склонение", g:"II скл., m"},
-  {t:"ventriculus, i m", tr:"желудочек", d:"ventriculus, ventriculi m — II склонение", g:"II скл., m"},
-  {t:"acromion, i n", tr:"акромион", d:"acromion, acromii n — II склонение", g:"II скл., n"},
-  {t:"antebrachium, i n", tr:"предплечье", d:"antebrachium, antebrachii n — II склонение", g:"II скл., n"},
-  {t:"atrium, i n", tr:"предсердие", d:"atrium, atrii n — II склонение", g:"II скл., n"},
-  {t:"brachium, i n", tr:"плечо", d:"brachium, brachii n — II склонение", g:"II скл., n"},
-  {t:"bulbus, i m", tr:"луковица", d:"bulbus, bulbi m — II склонение", g:"II скл., m"},
-  {t:"cavum, i n", tr:"полость", d:"cavum, cavi n — II склонение", g:"II скл., n"},
-  {t:"cerebellum, i n", tr:"мозжечок", d:"cerebellum, cerebelli n — II склонение", g:"II скл., n"},
-  {t:"cerebrum, i n", tr:"большой мозг", d:"cerebrum, cerebri n — II склонение", g:"II скл., n"},
-  {t:"collum, i n", tr:"шея, шейка", d:"collum, colli n — II склонение", g:"II скл., n"},
-  {t:"cranium, i n", tr:"череп", d:"cranium, cranii n — II склонение", g:"II скл., n"},
-  {t:"dorsum, i n", tr:"спина, тыл", d:"dorsum, dorsi n — II склонение", g:"II скл., n"},
-  {t:"ganglion, i n", tr:"нервный узел", d:"ganglion, ganglii n — II склонение", g:"II скл., n"},
-  {t:"labium, i n", tr:"губа", d:"labium, labii n — II склонение", g:"II скл., n"},
-  {t:"ligamentum, i n", tr:"связка", d:"ligamentum, ligamenti n — II склонение", g:"II скл., n"},
-  {t:"olecranon, i n", tr:"локтевой отросток", d:"olecranon, olecrani n — II склонение", g:"II скл., n"},
-  {t:"ostium, i n", tr:"устье", d:"ostium, ostii n — II склонение", g:"II скл., n"},
-  {t:"septum, i n", tr:"перегородка", d:"septum, septi n — II склонение", g:"II скл., n"},
-  {t:"sternum, i n", tr:"грудина", d:"sternum, sterni n — II склонение", g:"II скл., n"},
-  {t:"tuberculum, i n", tr:"бугорок", d:"tuberculum, tuberculi n — II склонение", g:"II скл., n"},
-  {t:"gaster, tris f", tr:"желудок", d:"gaster, gastris f — III склонение", g:"III скл., f"},
-  {t:"arcus, us m", tr:"дуга", d:"arcus, us m — IV склонение", g:"IV скл., m"},
-  {t:"cornu, us n", tr:"рог", d:"cornu, us n — IV склонение", g:"IV скл., n"},
-  {t:"ductus, us m", tr:"проток", d:"ductus, us m — IV склонение", g:"IV скл., m"},
-  {t:"genu, us n", tr:"колено", d:"genu, us n — IV склонение", g:"IV скл., n"},
-  {t:"manus, us f", tr:"рука", d:"manus, us f — IV склонение", g:"IV скл., f"},
-  {t:"plexus, us m", tr:"сплетение", d:"plexus, us m — IV склонение", g:"IV скл., m"},
-  {t:"processus, us m", tr:"отросток", d:"processus, us m — IV склонение", g:"IV скл., m"},
-  {t:"sinus, us m", tr:"пазуха", d:"sinus, us m — IV склонение", g:"IV скл., m"},
-  {t:"facies, ei f", tr:"лицо, поверхность", d:"facies, ei f — V склонение", g:"V скл., f"},
-  {t:"cardiacus, a, um", tr:"сердечный", d:"cardiacus, a, um", g:"Прил. I гр."},
-  {t:"cavernosus, a, um", tr:"пещеристый", d:"cavernosus, a, um", g:"Прил. I гр."},
-  {t:"cavus, a, um", tr:"полый", d:"cavus, a, um", g:"Прил. I гр."},
-  {t:"cutaneus, a, um", tr:"кожный", d:"cutaneus, a, um", g:"Прил. I гр."},
-  {t:"dexter, tra, trum", tr:"правый", d:"dexter, tra, trum", g:"Прил. I гр."},
-  {t:"fibrosus, a, um", tr:"фиброзный", d:"fibrosus, a, um", g:"Прил. I гр."},
-  {t:"gastricus, a, um", tr:"желудочный", d:"gastricus, a, um", g:"Прил. I гр."},
-  {t:"hepaticus, a, um", tr:"печёночный", d:"hepaticus, a, um", g:"Прил. I гр."},
-  {t:"hyoideus, a, um", tr:"подъязычный (кость)", d:"hyoideus, a, um", g:"Прил. I гр."},
-  {t:"hypoglossus, a, um", tr:"подъязычный (нерв)", d:"hypoglossus, a, um", g:"Прил. I гр."},
-  {t:"internus, a, um", tr:"внутренний", d:"internus, a, um", g:"Прил. I гр."},
-  {t:"ischiadicus, a, um", tr:"седалищный", d:"ischiadicus, a, um", g:"Прил. I гр."},
-  {t:"laryngeus, a, um", tr:"гортанный", d:"laryngeus, a, um", g:"Прил. I гр."},
-  {t:"longus, a, um", tr:"длинный", d:"longus, a, um", g:"Прил. I гр."},
-  {t:"mastoideus, a, um", tr:"сосцевидный", d:"mastoideus, a, um", g:"Прил. I гр."},
-  {t:"medianus, a, um", tr:"срединный", d:"medianus, a, um", g:"Прил. I гр."},
-  {t:"medius, a, um", tr:"средний", d:"medius, a, um", g:"Прил. I гр."},
-  {t:"obliquus, a, um", tr:"косой", d:"obliquus, a, um", g:"Прил. I гр."},
-  {t:"osseus, a, um", tr:"костный", d:"osseus, a, um", g:"Прил. I гр."},
-  {t:"palatinus, a, um", tr:"нёбный", d:"palatinus, a, um", g:"Прил. I гр."},
-  {t:"petrosus, a, um", tr:"каменистый", d:"petrosus, a, um", g:"Прил. I гр."},
-  {t:"pharyngeus, a, um", tr:"глоточный", d:"pharyngeus, a, um", g:"Прил. I гр."},
-  {t:"profundus, a, um", tr:"глубокий", d:"profundus, a, um", g:"Прил. I гр."},
-  {t:"pterygoideus, a, um", tr:"крыловидный", d:"pterygoideus, a, um", g:"Прил. I гр."},
-  {t:"rectus, a, um", tr:"прямой", d:"rectus, a, um", g:"Прил. I гр."},
-  {t:"sinister, tra, trum", tr:"левый", d:"sinister, tra, trum", g:"Прил. I гр."},
-  {t:"thoracicus, a, um", tr:"грудной", d:"thoracicus, a, um", g:"Прил. I гр."},
-  {t:"thyreoideus, a, um", tr:"щитовидный", d:"thyreoideus, a, um", g:"Прил. I гр."},
-  {t:"transversus, a, um", tr:"поперечный", d:"transversus, a, um", g:"Прил. I гр."},
-  {t:"venosus, a, um", tr:"венозный", d:"venosus, a, um", g:"Прил. I гр."},
-  {t:"zygomaticus, a, um", tr:"скуловой", d:"zygomaticus, a, um", g:"Прил. I гр."},
-  {t:"articularis, e", tr:"суставной", d:"articularis, e", g:"Прил. II гр."},
-  {t:"cervicalis, e", tr:"шейный", d:"cervicalis, e", g:"Прил. II гр."},
-  {t:"communis, e", tr:"общий", d:"communis, e", g:"Прил. II гр."},
-  {t:"frontalis, e", tr:"лобный", d:"frontalis, e", g:"Прил. II гр."},
-  {t:"intermuscularis, e", tr:"межмышечный", d:"intermuscularis, e", g:"Прил. II гр."},
-  {t:"lateralis, e", tr:"боковой", d:"lateralis, e", g:"Прил. II гр."},
-  {t:"longitudinalis, e", tr:"продольный", d:"longitudinalis, e", g:"Прил. II гр."},
-  {t:"lumbalis, e", tr:"поясничный", d:"lumbalis, e", g:"Прил. II гр."},
-  {t:"medialis, e", tr:"медиальный", d:"medialis, e", g:"Прил. II гр."},
-  {t:"nasalis, e", tr:"носовой", d:"nasalis, e", g:"Прил. II гр."},
-  {t:"occipitalis, e", tr:"затылочный", d:"occipitalis, e", g:"Прил. II гр."},
-  {t:"palmaris, e", tr:"ладонный", d:"palmaris, e", g:"Прил. II гр."},
-  {t:"parietalis, e", tr:"теменной", d:"parietalis, e", g:"Прил. II гр."},
-  {t:"pectoralis, e", tr:"грудной", d:"pectoralis, e", g:"Прил. II гр."},
-  {t:"pulmonalis, e", tr:"лёгочный", d:"pulmonalis, e", g:"Прил. II гр."},
-  {t:"sacralis, e", tr:"крестцовый", d:"sacralis, e", g:"Прил. II гр."},
-  {t:"sphenoidalis, e", tr:"клиновидный", d:"sphenoidalis, e", g:"Прил. II гр."},
-  {t:"superficialis, e", tr:"поверхностный", d:"superficialis, e", g:"Прил. II гр."},
-  {t:"sublingualis, e", tr:"подъязычный", d:"sublingualis, e", g:"Прил. II гр."},
-  {t:"temporalis, e", tr:"височный", d:"temporalis, e", g:"Прил. II гр."},
-  {t:"vertebralis, e", tr:"позвоночный", d:"vertebralis, e", g:"Прил. II гр."},
-  {t:"anterior, ius", tr:"передний", d:"anterior, ius", g:"Сравн. степень"},
-  {t:"inferior, ius", tr:"нижний", d:"inferior, ius", g:"Сравн. степень"},
-  {t:"major, us", tr:"большой", d:"major, us", g:"Сравн. степень"},
-  {t:"minor, us", tr:"малый", d:"minor, us", g:"Сравн. степень"},
-  {t:"posterior, ius", tr:"задний", d:"posterior, ius", g:"Сравн. степень"},
-  {t:"superior, ius", tr:"верхний", d:"superior, ius", g:"Сравн. степень"},
-  {t:"bulbus oculi", tr:"глазное яблоко", d:"bulbus (m) + oculus (m, gen.)", g:"Словосочетание"},
-  {t:"medulla spinalis", tr:"спинной мозг", d:"medulla (f) + spinalis, e", g:"Словосочетание"},
-  {t:"vesica urinaria", tr:"мочевой пузырь", d:"vesica (f) + urinarius,
+const allCards=[
+{t:"ala, ae f",tr:"крыло",d:"ala, alae f — I склонение",g:"I скл., f"},
+{t:"aorta, ae f",tr:"аорта",d:"aorta, aortae f — I склонение",g:"I скл., f"},
+{t:"arteria, ae f",tr:"артерия",d:"arteria, arteriae f — I склонение",g:"I скл., f"},
+{t:"clavicula, ae f",tr:"ключица",d:"clavicula, claviculae f — I склонение",g:"I скл., f"},
+{t:"concha, ae f",tr:"раковина",d:"concha, conchae f — I склонение",g:"I скл., f"},
+{t:"costa, ae f",tr:"ребро",d:"costa, costae f — I склонение",g:"I скл., f"},
+{t:"crista, ae f",tr:"гребень",d:"crista, cristae f — I склонение",g:"I скл., f"},
+{t:"fissura, ae f",tr:"щель",d:"fissura, fissurae f — I склонение",g:"I скл., f"},
+{t:"fractura, ae f",tr:"перелом",d:"fractura, fracturae f — I склонение",g:"I скл., f"},
+{t:"fossa, ae f",tr:"ямка удлинённой формы",d:"fossa, fossae f — I склонение",g:"I скл., f"},
+{t:"fovea, ae f",tr:"ямка округлой формы",d:"fovea, foveae f — I склонение",g:"I скл., f"},
+{t:"glandula, ae f",tr:"железа",d:"glandula, glandulae f — I склонение",g:"I скл., f"},
+{t:"incisura, ae f",tr:"вырезка",d:"incisura, incisurae f — I склонение",g:"I скл., f"},
+{t:"lamina, ae f",tr:"пластинка",d:"lamina, laminae f — I склонение",g:"I скл., f"},
+{t:"lingua, ae f",tr:"язык",d:"lingua, linguae f — I склонение",g:"I скл., f"},
+{t:"linea, ae f",tr:"линия",d:"linea, lineae f — I склонение",g:"I скл., f"},
+{t:"mandibula, ae f",tr:"нижняя челюсть",d:"mandibula, mandibulae f — I склонение",g:"I скл., f"},
+{t:"maxilla, ae f",tr:"верхняя челюсть",d:"maxilla, maxillae f — I склонение",g:"I скл., f"},
+{t:"medulla, ae f",tr:"мозг, мозговое вещество",d:"medulla, medullae f — I склонение",g:"I скл., f"},
+{t:"plica, ae f",tr:"складка",d:"plica, plicae f — I склонение",g:"I скл., f"},
+{t:"scapula, ae f",tr:"лопатка",d:"scapula, scapulae f — I склонение",g:"I скл., f"},
+{t:"spina, ae f",tr:"ость, шип",d:"spina, spinae f — I склонение",g:"I скл., f"},
+{t:"sutura, ae f",tr:"шов",d:"sutura, suturae f — I склонение",g:"I скл., f"},
+{t:"tibia, ae f",tr:"большеберцовая кость",d:"tibia, tibiae f — I склонение",g:"I скл., f"},
+{t:"ulna, ae f",tr:"локтевая кость",d:"ulna, ulnae f — I склонение",g:"I скл., f"},
+{t:"vagina, ae f",tr:"влагалище",d:"vagina, vaginae f — I склонение",g:"I скл., f"},
+{t:"vena, ae f",tr:"вена",d:"vena, venae f — I склонение",g:"I скл., f"},
+{t:"vertebra, ae f",tr:"позвонок",d:"vertebra, vertebrae f — I склонение",g:"I скл., f"},
+{t:"vesica, ae f",tr:"пузырь",d:"vesica, vesicae f — I склонение",g:"I скл., f"},{t:"angulus, i m",tr:"угол",d:"angulus, anguli m — II склонение",g:"II скл., m"},
+{t:"digitus, i m",tr:"палец",d:"digitus, digiti m — II склонение",g:"II скл., m"},
+{t:"fundus, i m",tr:"дно",d:"fundus, fundi m — II склонение",g:"II скл., m"},
+{t:"gyrus, i m",tr:"извилина",d:"gyrus, gyri m — II склонение",g:"II скл., m"},
+{t:"humerus, i m",tr:"плечевая кость",d:"humerus, humeri m — II склонение",g:"II скл., m"},
+{t:"lobus, i m",tr:"доля",d:"lobus, lobi m — II склонение",g:"II скл., m"},
+{t:"musculus, i m",tr:"мышца",d:"musculus, musculi m — II склонение",g:"II скл., m"},
+{t:"nasus, i m",tr:"нос",d:"nasus, nasi m — II склонение",g:"II скл., m"},
+{t:"nervus, i m",tr:"нерв",d:"nervus, nervi m — II склонение",g:"II скл., m"},
+{t:"oculus, i m",tr:"глаз",d:"oculus, oculi m — II склонение",g:"II скл., m"},
+{t:"radius, i m",tr:"лучевая кость",d:"radius, radii m — II склонение",g:"II скл., m"},
+{t:"ramus, i m",tr:"ветвь",d:"ramus, rami m — II склонение",g:"II скл., m"},
+{t:"sulcus, i m",tr:"борозда",d:"sulcus, sulci m — II склонение",g:"II скл., m"},
+{t:"uterus, i m",tr:"матка",d:"uterus, uteri m — II склонение",g:"II скл., m"},
+{t:"ventriculus, i m",tr:"желудочек",d:"ventriculus, ventriculi m — II склонение",g:"II скл., m"},
+{t:"acromion, i n",tr:"акромион",d:"acromion, acromii n — II склонение",g:"II скл., n"},
+{t:"antebrachium, i n",tr:"предплечье",d:"antebrachium, antebrachii n — II склонение",g:"II скл., n"},
+{t:"atrium, i n",tr:"предсердие",d:"atrium, atrii n — II склонение",g:"II скл., n"},
+{t:"brachium, i n",tr:"плечо",d:"brachium, brachii n — II склонение",g:"II скл., n"},
+{t:"bulbus, i m",tr:"луковица",d:"bulbus, bulbi m — II склонение",g:"II скл., m"},
+{t:"cavum, i n",tr:"полость",d:"cavum, cavi n — II склонение",g:"II скл., n"},
+{t:"cerebellum, i n",tr:"мозжечок",d:"cerebellum, cerebelli n — II склонение",g:"II скл., n"},
+{t:"cerebrum, i n",tr:"большой мозг",d:"cerebrum, cerebri n — II склонение",g:"II скл., n"},
+{t:"collum, i n",tr:"шея, шейка",d:"collum, colli n — II склонение",g:"II скл., n"},
+{t:"cranium, i n",tr:"череп",d:"cranium, cranii n — II склонение",g:"II скл., n"},
+{t:"dorsum, i n",tr:"спина, тыл",d:"dorsum, dorsi n — II склонение",g:"II скл., n"},
+{t:"ganglion, i n",tr:"нервный узел",d:"ganglion, ganglii n — II склонение",g:"II скл., n"},
+{t:"labium, i n",tr:"губа",d:"labium, labii n — II склонение",g:"II скл., n"},
+{t:"ligamentum, i n",tr:"связка",d:"ligamentum, ligamenti n — II склонение",g:"II скл., n"},
+{t:"olecranon, i n",tr:"локтевой отросток",d:"olecranon, olecrani n — II склонение",g:"II скл., n"},
+{t:"ostium, i n",tr:"устье",d:"ostium, ostii n — II склонение",g:"II скл., n"},
+{t:"septum, i n",tr:"перегородка",d:"septum, septi n — II склонение",g:"II скл., n"},
+{t:"sternum, i n",tr:"грудина",d:"sternum, sterni n — II склонение",g:"II скл., n"},
+{t:"tuberculum, i n",tr:"бугорок",d:"tuberculum, tuberculi n — II склонение",g:"II скл., n"},
+{t:"gaster, tris f",tr:"желудок",d:"gaster, gastris f — III склонение",g:"III скл., f"},
+{t:"arcus, us m",tr:"дуга",d:"arcus, us m — IV склонение",g:"IV скл., m"},
+{t:"cornu, us n",tr:"рог",d:"cornu, us n — IV склонение",g:"IV скл., n"},
+{t:"ductus, us m",tr:"проток",d:"ductus, us m — IV склонение",g:"IV скл., m"},
+{t:"genu, us n",tr:"колено",d:"genu, us n — IV склонение",g:"IV скл., n"},
+{t:"manus, us f",tr:"рука",d:"manus, us f — IV склонение",g:"IV скл., f"},
+{t:"plexus, us m",tr:"сплетение",d:"plexus, us m — IV склонение",g:"IV скл., m"},
+{t:"processus, us m",tr:"отросток",d:"processus, us m — IV склонение",g:"IV скл., m"},
+{t:"sinus, us m",tr:"пазуха",d:"sinus, us m — IV склонение",g:"IV скл., m"},
+{t:"facies, ei f",tr:"лицо, поверхность",d:"facies, ei f — V склонение",g:"V скл., f"},
+{t:"cardiacus, a, um",tr:"сердечный",d:"cardiacus, a, um",g:"Прил. I гр."},
+{t:"cavernosus, a, um",tr:"пещеристый",d:"cavernosus, a, um",g:"Прил. I гр."},
+{t:"cavus, a, um",tr:"полый",d:"cavus, a, um",g:"Прил. I гр."},
+{t:"cutaneus, a, um",tr:"кожный",d:"cutaneus, a, um",g:"Прил. I гр."},
+{t:"dexter, tra, trum",tr:"правый",d:"dexter, tra, trum",g:"Прил. I гр."},
+{t:"fibrosus, a, um",tr:"фиброзный",d:"fibrosus, a, um",g:"Прил. I гр."},
+{t:"gastricus, a, um",tr:"желудочный",d:"gastricus, a, um",g:"Прил. I гр."},
+{t:"hepaticus, a, um",tr:"печёночный",d:"hepaticus, a, um",g:"Прил. I гр."},
+{t:"hyoideus, a, um",tr:"подъязычный (кость)",d:"hyoideus, a, um",g:"Прил. I гр."},
+{t:"hypoglossus, a, um",tr:"подъязычный (нерв)",d:"hypoglossus, a, um",g:"Прил. I гр."},
+{t:"internus, a, um",tr:"внутренний",d:"internus, a, um",g:"Прил. I гр."},
+{t:"ischiadicus, a, um",tr:"седалищный",d:"ischiadicus, a, um",g:"Прил. I гр."},
+{t:"laryngeus, a, um",tr:"гортанный",d:"laryngeus, a, um",g:"Прил. I гр."},
+{t:"longus, a, um",tr:"длинный",d:"longus, a, um",g:"Прил. I гр."},
+{t:"mastoideus, a, um",tr:"сосцевидный",d:"mastoideus, a, um",g:"Прил. I гр."},
+{t:"medianus, a, um",tr:"срединный",d:"medianus, a, um",g:"Прил. I гр."},
+{t:"medius, a, um",tr:"средний",d:"medius, a, um",g:"Прил. I гр."},
+{t:"obliquus, a, um",tr:"косой",d:"obliquus, a, um",g:"Прил. I гр."},
+{t:"osseus, a, um",tr:"костный",d:"osseus, a, um",g:"Прил. I гр."},
+{t:"palatinus, a, um",tr:"нёбный",d:"palatinus, a, um",g:"Прил. I гр."},
+{t:"petrosus, a, um",tr:"каменистый",d:"petrosus, a, um",g:"Прил. I гр."},
+{t:"pharyngeus, a, um",tr:"глоточный",d:"pharyngeus, a, um",g:"Прил. I гр."},
+{t:"profundus, a, um",tr:"глубокий",d:"profundus, a, um",g:"Прил. I гр."},
+{t:"pterygoideus, a, um",tr:"крыловидный",d:"pterygoideus, a, um",g:"Прил. I гр."},
+{t:"rectus, a, um",tr:"прямой",d:"rectus, a, um",g:"Прил. I гр."},
+{t:"sinister, tra, trum",tr:"левый",d:"sinister, tra, trum",g:"Прил. I гр."},
+{t:"thoracicus, a, um",tr:"грудной",d:"thoracicus, a, um",g:"Прил. I гр."},
+{t:"thyreoideus, a, um",tr:"щитовидный",d:"thyreoideus, a, um",g:"Прил. I гр."},
+{t:"transversus, a, um",tr:"поперечный",d:"transversus, a, um",g:"Прил. I гр."},
+{t:"venosus, a, um",tr:"венозный",d:"venosus, a, um",g:"Прил. I гр."},
+{t:"zygomaticus, a, um",tr:"скуловой",d:"zygomaticus, a, um",g:"Прил. I гр."},
+{t:"articularis, e",tr:"суставной",d:"articularis, e",g:"Прил. II гр."},
+{t:"cervicalis, e",tr:"шейный",d:"cervicalis, e",g:"Прил. II гр."},
+{t:"communis, e",tr:"общий",d:"communis, e",g:"Прил. II гр."},
+{t:"frontalis, e",tr:"лобный",d:"frontalis, e",g:"Прил. II гр."},
+{t:"intermuscularis, e",tr:"межмышечный",d:"intermuscularis, e",g:"Прил. II гр."},
+{t:"lateralis, e",tr:"боковой",d:"lateralis, e",g:"Прил. II гр."},
+{t:"longitudinalis, e",tr:"продольный",d:"longitudinalis, e",g:"Прил. II гр."},
+{t:"lumbalis, e",tr:"поясничный",d:"lumbalis, e",g:"Прил. II гр."},
+{t:"medialis, e",tr:"медиальный",d:"medialis, e",g:"Прил. II гр."},
+{t:"nasalis, e",tr:"носовой",d:"nasalis, e",g:"Прил. II гр."},
+{t:"occipitalis, e",tr:"затылочный",d:"occipitalis, e",g:"Прил. II гр."},
+{t:"palmaris, e",tr:"ладонный",d:"palmaris, e",g:"Прил. II гр."},
+{t:"parietalis, e",tr:"теменной",d:"parietalis, e",g:"Прил. II гр."},
+{t:"pectoralis, e",tr:"грудной",d:"pectoralis, e",g:"Прил. II гр."},
+{t:"pulmonalis, e",tr:"лёгочный",d:"pulmonalis, e",g:"Прил. II гр."},
+{t:"sacralis, e",tr:"крестцовый",d:"sacralis, e",g:"Прил. II гр."},
+{t:"sphenoidalis, e",tr:"клиновидный",d:"sphenoidalis, e",g:"Прил. II гр."},
+{t:"superficialis, e",tr:"поверхностный",d:"superficialis, e",g:"Прил. II гр."},
+{t:"sublingualis, e",tr:"подъязычный",d:"sublingualis, e",g:"Прил. II гр."},
+{t:"temporalis, e",tr:"височный",d:"temporalis, e",g:"Прил. II гр."},
+{t:"vertebralis, e",tr:"позвоночный",d:"vertebralis, e",g:"Прил. II гр."},
+{t:"anterior, ius",tr:"передний",d:"anterior, ius",g:"Сравн. степень"},
+{t:"inferior, ius",tr:"нижний",d:"inferior, ius",g:"Сравн. степень"},
+{t:"major, us",tr:"большой",d:"major, us",g:"Сравн. степень"},
+{t:"minor, us",tr:"малый",d:"minor, us",g:"Сравн. степень"},
+{t:"posterior, ius",tr:"задний",d:"posterior, ius",g:"Сравн. степень"},
+{t:"superior, ius",tr:"верхний",d:"superior, ius",g:"Сравн. степень"},
+{t:"bulbus oculi",tr:"глазное яблоко",d:"bulbus (m) + oculus (m, gen.)",g:"Словосочетание"},
+{t:"medulla spinalis",tr:"спинной мозг",d:"medulla (f) + spinalis, e",g:"Словосочетание"},
+{t:"vesica urinaria",tr:"мочевой пузырь",d:"vesica (f) + urinarius, a, um",g:"Словосочетание"}
+];
+
+const key=c=>c.t+"|"+c.tr;
+let knownSet=new Set();
+let deck=[];
+let idx=0;
+let flipped=false;
+
+function saveState(){try{localStorage.setItem('latin_known',JSON.stringify([...knownSet]))}catch(e){}}
+function loadState(){try{const s=localStorage.getItem('latin_known');if(s)knownSet=new Set(JSON.parse(s))}catch(e){}}
+function buildDeck(){deck=allCards.filter(c=>!knownSet.has(key(c)));idx=0;flipped=false}
+
+const cardEl=document.getElementById('card');
+const frontTrEl=document.getElementById('frontTranslation');
+const backTermEl=document.getElementById('backTerm');
+const backDeclEl=document.getElementById('backDeclension');
+const counterEl=document.getElementById('counter');
+const progressEl=document.getElementById('progress');
+
+function render(){
+  if(deck.length===0){
+    frontTrEl.textContent="🎉 Все карточки выучены!";
+    backTermEl.textContent="";
+    backDeclEl.textContent="Нажми «Списки», чтобы увидеть все известные";
+    counterEl.textContent="0 / 0";
+    progressEl.style.width='100%';
+    if(flipped){cardEl.classList.remove('flipped');flipped=false}
+    return;
+  }
+  if(idx>=deck.length)idx=0;
+  const c=deck[idx];
+  frontTrEl.textContent=c.tr;
+  backTermEl.textContent=c.t;
+  backDeclEl.innerHTML=c.d+`<div style="margin-top:10px;font-size:0.8rem;color:#d81b60;font-style:normal;font-weight:600">${c.g}</div>`;
+  counterEl.textContent=`${idx+1} / ${deck.length}`;
+  progressEl.style.width=((idx+1)/deck.length*100)+'%';
+  if(flipped){cardEl.classList.remove('flipped');flipped=false}
+}
+function flip(){if(deck.length===0)return;flipped=!flipped;cardEl.classList.toggle('flipped',flipped)}
+function next(){if(deck.length===0)return;idx=(idx+1)%deck.length;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
+function prev(){if(deck.length===0)return;idx=(idx-1+deck.length)%deck.length;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
+function markKnown(){if(deck.length===0)return;const c=deck[idx];knownSet.add(key(c));saveState();deck.splice(idx,1);if(idx>=deck.length)idx=0;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
+function shuffle(){for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}idx=0;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
+
+let currentTab='unknown';
+function openModal(){document.getElementById('modal').classList.add('open');renderModal()}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function switchTab(tab){currentTab=tab;document.getElementById('tabUnknown').classList.toggle('active',tab==='unknown');document.getElementById('tabKnown').classList.toggle('active',tab==='known');renderModal()}
+function renderModal(){
+  const knownList=allCards.filter(c=>knownSet.has(key(c)));
+  const unknownList=allCards.filter(c=>!knownSet.has(key(c)));
+  document.getElementById('cntKnown').textContent=knownList.length;
+  document.getElementById('cntUnknown').textContent=unknownList.length;
+  const list=currentTab==='known'?knownList:unknownList;
+  const body=document.getElementById('modalBody');
+  if(list.length===0){
+    body.innerHTML=`<div class="empty-msg">${currentTab==='known'?'Пока ничего не выучено 💪':'Все карточки выучены! 🎉'}</div>`;
+  }else{
+    body.innerHTML='<ul>'+list.map(c=>`<li><div class="ru">${c.tr}</div><div class="la">${c.t} — ${c.d} <span style="color:#d81b60;font-weight:600">[${c.g}]</span></div></li>`).join('')+'</ul>';
+  }
+  document.getElementById('stats').textContent=`Всего: ${allCards.length} · Знаю: ${knownList.length} · Осталось: ${unknownList.length}`;
+}
+
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')closeModal();return}
+  if(e.key==='ArrowRight')next();
+  else if(e.key==='ArrowLeft')prev();
+  else if(e.key===' '){e.preventDefault();flip()}
+});
+
+loadState();
+buildDeck();
+render();
+</script>
+</body>
+</html>
