@@ -5,230 +5,281 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Латинские карточки</title>
 <style>
+:root{
+--bg1:#ffe4ec;--bg2:#ffc2d9;--bg3:#f8a5c2;--text:#5a2a3e;--title:#c2185b;--counter:#d81b60;
+--front1:#fff0f5;--front2:#ffd6e7;--front-border:#f48fb1;--back1:#ffd6e7;--back2:#ffb3d1;--back-border:#ec407a;
+--tr:#ad1457;--term:#880e4f;--decl:#6a1b3e;--hint:#d81b60;--btn:#ec407a;--btn-hover:#d81b60;
+--know1:#f06292;--know2:#e91e63;--shuffle:#ba68c8;--shuffle-hover:#ab47bc;--list:#f48fb1;--list-text:#6a1b3e;
+--progress-bg:#ffd6e7;--progress1:#f06292;--progress2:#c2185b;--modal-bg:#fff0f5;--modal-border:#f48fb1;
+--modal-header-border:#ffd6e7;--modal-title:#ad1457;--tab-text:#d81b60;--tab-active-bg:#ffd6e7;--tab-active-text:#880e4f;
+--li-bg:#fff;--li-border:#f48fb1;--li-ru:#880e4f;--li-la:#6a1b3e;--stats:#ad1457;--empty:#d81b60;
+}
+body.dark{
+--bg1:#1a0a12;--bg2:#2d0f1f;--bg3:#4a1530;--text:#f5d5e0;--title:#ff8fb8;--counter:#ff6b9d;
+--front1:#3d1528;--front2:#5a1f3a;--front-border:#a83a5e;--back1:#5a1f3a;--back2:#7a2a4e;--back-border:#ff6b9d;
+--tr:#ffb3d1;--term:#ffd6e7;--decl:#e8b8cc;--hint:#ff8fb8;--btn:#c2185b;--btn-hover:#e91e63;
+--know1:#e91e63;--know2:#ff4081;--shuffle:#7b3fa0;--shuffle-hover:#9a4fc9;--list:#a83a5e;--list-text:#ffd6e7;
+--progress-bg:#4a1530;--progress1:#ff6b9d;--progress2:#e91e63;--modal-bg:#2d0f1f;--modal-border:#a83a5e;
+--modal-header-border:#4a1530;--modal-title:#ff8fb8;--tab-text:#ff8fb8;--tab-active-bg:#4a1530;--tab-active-text:#ffd6e7;
+--li-bg:#3d1528;--li-border:#a83a5e;--li-ru:#ffd6e7;--li-la:#e8b8cc;--stats:#ff8fb8;--empty:#ff8fb8;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#ffe4ec,#ffc2d9 50%,#f8a5c2);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#5a2a3e}
-h1{font-size:1.3rem;margin-bottom:5px;color:#c2185b;text-align:center}
-.counter{font-size:.95rem;color:#d81b60;margin-bottom:15px;font-weight:600}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2) 50%,var(--bg3));min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:var(--text);transition:background .3s,color .3s}
+h1{font-size:1.3rem;margin-bottom:5px;color:var(--title);text-align:center}
+.counter{font-size:.95rem;color:var(--counter);margin-bottom:15px;font-weight:600}
 .scene{width:100%;max-width:520px;height:340px;perspective:1200px}
-.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s;cursor:pointer;border-radius:20px;box-shadow:0 12px 35px rgba(194,24,91,.3)}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s;cursor:pointer;border-radius:20px;box-shadow:0 12px 35px rgba(0,0,0,.25)}
 .card.flipped{transform:rotateY(180deg)}
 .face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center}
-.front{background:linear-gradient(145deg,#fff0f5,#ffd6e7);border:3px solid #f48fb1}
-.back{background:linear-gradient(145deg,#ffd6e7,#ffb3d1);border:3px solid #ec407a;transform:rotateY(180deg)}
-.front .translation{font-size:2rem;font-weight:700;color:#ad1457;line-height:1.2}
-.back .term{font-size:1.7rem;font-weight:700;color:#880e4f;margin-bottom:12px;line-height:1.2}
-.back .declension{font-size:.95rem;color:#6a1b3e;line-height:1.5;font-style:italic}
-.hint{font-size:.85rem;color:#d81b60;margin-top:18px;opacity:.7}
+.front{background:linear-gradient(145deg,var(--front1),var(--front2));border:3px solid var(--front-border)}
+.back{background:linear-gradient(145deg,var(--back1),var(--back2));border:3px solid var(--back-border);transform:rotateY(180deg)}
+.front .translation{font-size:2rem;font-weight:700;color:var(--tr);line-height:1.2}
+.back .term{font-size:1.7rem;font-weight:700;color:var(--term);margin-bottom:12px;line-height:1.2}
+.back .declension{font-size:.95rem;color:var(--decl);line-height:1.5;font-style:italic}
+.hint{font-size:.85rem;color:var(--hint);margin-top:18px;opacity:.7}
 .controls{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap;justify-content:center}
 button{padding:11px 18px;border:none;border-radius:14px;font-size:.92rem;font-weight:600;cursor:pointer;transition:.2s;color:#fff}
 button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,.2)}
-.nav-btn{background:#ec407a}.nav-btn:hover{background:#d81b60}
-.know-btn{background:linear-gradient(135deg,#f06292,#e91e63);padding:11px 22px;font-size:.95rem}
-.shuffle{background:#ba68c8}.shuffle:hover{background:#ab47bc}
-.list-btn{background:#f48fb1;color:#6a1b3e}.list-btn:hover{background:#f06292;color:#fff}
-.progress-bar{width:100%;max-width:520px;height:8px;background:#ffd6e7;border-radius:4px;margin-top:18px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,#f06292,#c2185b);transition:width .3s}
-.modal{display:none;position:fixed;inset:0;background:rgba(90,42,62,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
+.nav-btn{background:var(--btn)}.nav-btn:hover{background:var(--btn-hover)}
+.know-btn{background:linear-gradient(135deg,var(--know1),var(--know2));padding:11px 22px;font-size:.95rem}
+.shuffle{background:var(--shuffle)}.shuffle:hover{background:var(--shuffle-hover)}
+.list-btn{background:var(--list);color:var(--list-text)}.list-btn:hover{background:var(--btn-hover);color:#fff}
+.theme-btn{background:transparent;color:var(--title);font-size:1.2rem;padding:6px 10px;border:2px solid var(--front-border)}
+.theme-btn:hover{background:var(--front-border);color:#fff;transform:none;box-shadow:none}
+.progress-bar{width:100%;max-width:520px;height:8px;background:var(--progress-bg);border-radius:4px;margin-top:18px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--progress1),var(--progress2));transition:width .3s}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
-.modal-content{background:#fff0f5;border-radius:20px;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.3);border:3px solid #f48fb1}
-.modal-header{padding:18px 22px;border-bottom:2px solid #ffd6e7;display:flex;justify-content:space-between;align-items:center}
-.modal-header h2{font-size:1.15rem;color:#ad1457}
-.close-btn{background:transparent;color:#ad1457;font-size:1.5rem;padding:0 8px;line-height:1}
-.modal-tabs{display:flex;border-bottom:2px solid #ffd6e7}
-.tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:600;color:#d81b60;background:transparent;border:none;border-radius:0;font-size:.9rem}
-.tab.active{background:#ffd6e7;color:#880e4f}
+.modal-content{background:var(--modal-bg);border-radius:20px;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.5);border:3px solid var(--modal-border)}
+.modal-header{padding:18px 22px;border-bottom:2px solid var(--modal-header-border);display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-size:1.15rem;color:var(--modal-title)}
+.close-btn{background:transparent;color:var(--modal-title);font-size:1.5rem;padding:0 8px;line-height:1}
+.close-btn:hover{color:var(--btn-hover);transform:none;box-shadow:none}
+.modal-tabs{display:flex;border-bottom:2px solid var(--modal-header-border)}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:600;color:var(--tab-text);background:transparent;border:none;border-radius:0;font-size:.9rem}
+.tab.active{background:var(--tab-active-bg);color:var(--tab-active-text)}
 .modal-body{overflow-y:auto;padding:16px 22px;flex:1}
 .modal-body ul{list-style:none}
-.modal-body li{padding:10px 12px;margin-bottom:6px;background:#fff;border-radius:10px;border-left:4px solid #f48fb1;font-size:.9rem}
-.modal-body li .ru{font-weight:600;color:#880e4f}
-.modal-body li .la{color:#6a1b3e;font-size:.85rem;margin-top:3px;font-style:italic}
-.empty-msg{text-align:center;color:#d81b60;padding:30px;font-style:italic}
-.stats{padding:10px 22px;font-size:.85rem;color:#ad1457;text-align:center}
+.modal-body li{padding:10px 12px;margin-bottom:6px;background:var(--li-bg);border-radius:10px;border-left:4px solid var(--li-border);font-size:.9rem}
+.modal-body li .ru{font-weight:600;color:var(--li-ru)}
+.modal-body li .la{color:var(--li-la);font-size:.85rem;margin-top:3px;font-style:italic}
+.empty-msg{text-align:center;color:var(--empty);padding:30px;font-style:italic}
+.stats{padding:10px 22px;font-size:.85rem;color:var(--stats);text-align:center}
+.deck-select{width:100%;max-width:520px;margin-bottom:15px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.deck-select select{padding:10px 14px;border-radius:12px;border:2px solid var(--front-border);background:var(--front1);color:var(--title);font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit}
+.deck-select label{font-size:.85rem;color:var(--title);font-weight:600;align-self:center}
 @media(max-width:480px){.front .translation{font-size:1.5rem}.back .term{font-size:1.3rem}.back .declension{font-size:.85rem}button{padding:9px 14px;font-size:.85rem}}
 </style>
 </head>
 <body>
 <h1>🌸 Латинские анатомические карточки</h1>
 <div class="counter" id="counter">1 / N</div>
+<div class="deck-select">
+<label>📚 Колода:</label>
+<select id="deckSelect" onchange="changeDeck()">
+<option value="all">Всё вместе</option>
+<option value="min1">Минимум 1 — сущ. I–II скл.</option>
+<option value="min2">Минимум 2 — сущ. III–V скл. + словосоч.</option>
+<option value="min3">Минимум 3 — прилагательные</option>
+</select>
+<button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Тема">🌙</button>
+</div>
 <div class="scene">
-  <div class="card" id="card" onclick="flip()">
-    <div class="face front">
-      <div class="translation" id="frontTranslation"></div>
-      <div class="hint">нажми, чтобы увидеть латынь</div>
-    </div>
-    <div class="face back">
-      <div class="term" id="backTerm"></div>
-      <div class="declension" id="backDeclension"></div>
-    </div>
-  </div>
+<div class="card" id="card" onclick="flip()">
+<div class="face front">
+<div class="translation" id="frontTranslation"></div>
+<div class="hint">нажми, чтобы увидеть латынь</div>
+</div>
+<div class="face back">
+<div class="term" id="backTerm"></div>
+<div class="declension" id="backDeclension"></div>
+</div>
+</div>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 <div class="controls">
-  <button class="nav-btn" onclick="prev()">← Назад</button>
-  <button class="know-btn" onclick="markKnown()">Знаю, блять ✅</button>
-  <button class="nav-btn" onclick="next()">Вперёд →</button>
+<button class="nav-btn" onclick="prev()">← Назад</button>
+<button class="know-btn" onclick="markKnown()">Знаю, блять ✅</button>
+<button class="nav-btn" onclick="next()">Вперёд →</button>
 </div>
 <div class="controls" style="margin-top:10px">
-  <button class="shuffle" onclick="shuffle()">🔀 Перемешать</button>
-  <button class="list-btn" onclick="openModal()">📋 Списки</button>
+<button class="shuffle" onclick="shuffle()">🔀 Перемешать</button>
+<button class="list-btn" onclick="openModal()">📋 Списки</button>
+<button class="list-btn" onclick="openBrowse()">📖 Полистать все</button>
 </div>
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-content">
-    <div class="modal-header"><h2>📋 Мои карточки</h2><button class="close-btn" onclick="closeModal()">×</button></div>
-    <div class="modal-tabs">
-      <button class="tab active" id="tabUnknown" onclick="switchTab('unknown')">🤔 Не знаю (<span id="cntUnknown">0</span>)</button>
-      <button class="tab" id="tabKnown" onclick="switchTab('known')">✅ Знаю (<span id="cntKnown">0</span>)</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="stats" id="stats"></div>
-  </div>
+<div class="modal-content">
+<div class="modal-header"><h2>📋 Мои карточки</h2><button class="close-btn" onclick="closeModal()">×</button></div>
+<div class="modal-tabs">
+<button class="tab active" id="tabUnknown" onclick="switchTab('unknown')">🤔 Не знаю (<span id="cntUnknown">0</span>)</button>
+<button class="tab" id="tabKnown" onclick="switchTab('known')">✅ Знаю (<span id="cntKnown">0</span>)</button>
 </div>
-<script>
-const allCards=[
-{t:"ala, ae f",tr:"крыло",d:"ala, alae f — I склонение",g:"I скл., f"},
-{t:"aorta, ae f",tr:"аорта",d:"aorta, aortae f — I склонение",g:"I скл., f"},
-{t:"arteria, ae f",tr:"артерия",d:"arteria, arteriae f — I склонение",g:"I скл., f"},
-{t:"clavicula, ae f",tr:"ключица",d:"clavicula, claviculae f — I склонение",g:"I скл., f"},
-{t:"concha, ae f",tr:"раковина",d:"concha, conchae f — I склонение",g:"I скл., f"},
-{t:"costa, ae f",tr:"ребро",d:"costa, costae f — I склонение",g:"I скл., f"},
-{t:"crista, ae f",tr:"гребень",d:"crista, cristae f — I склонение",g:"I скл., f"},
-{t:"fissura, ae f",tr:"щель",d:"fissura, fissurae f — I склонение",g:"I скл., f"},
-{t:"fractura, ae f",tr:"перелом",d:"fractura, fracturae f — I склонение",g:"I скл., f"},
-{t:"fossa, ae f",tr:"ямка удлинённой формы",d:"fossa, fossae f — I склонение",g:"I скл., f"},
-{t:"fovea, ae f",tr:"ямка округлой формы",d:"fovea, foveae f — I склонение",g:"I скл., f"},
-{t:"glandula, ae f",tr:"железа",d:"glandula, glandulae f — I склонение",g:"I скл., f"},
-{t:"incisura, ae f",tr:"вырезка",d:"incisura, incisurae f — I склонение",g:"I скл., f"},
-{t:"lamina, ae f",tr:"пластинка",d:"lamina, laminae f — I склонение",g:"I скл., f"},
-{t:"lingua, ae f",tr:"язык",d:"lingua, linguae f — I склонение",g:"I скл., f"},
-{t:"linea, ae f",tr:"линия",d:"linea, lineae f — I склонение",g:"I скл., f"},
-{t:"mandibula, ae f",tr:"нижняя челюсть",d:"mandibula, mandibulae f — I склонение",g:"I скл., f"},
-{t:"maxilla, ae f",tr:"верхняя челюсть",d:"maxilla, maxillae f — I склонение",g:"I скл., f"},
-{t:"medulla, ae f",tr:"мозг, мозговое вещество",d:"medulla, medullae f — I склонение",g:"I скл., f"},
-{t:"plica, ae f",tr:"складка",d:"plica, plicae f — I склонение",g:"I скл., f"},
-{t:"scapula, ae f",tr:"лопатка",d:"scapula, scapulae f — I склонение",g:"I скл., f"},
-{t:"spina, ae f",tr:"ость, шип",d:"spina, spinae f — I склонение",g:"I скл., f"},
-{t:"sutura, ae f",tr:"шов",d:"sutura, suturae f — I склонение",g:"I скл., f"},
-{t:"tibia, ae f",tr:"большеберцовая кость",d:"tibia, tibiae f — I склонение",g:"I скл., f"},
-{t:"ulna, ae f",tr:"локтевая кость",d:"ulna, ulnae f — I склонение",g:"I скл., f"},
-{t:"vagina, ae f",tr:"влагалище",d:"vagina, vaginae f — I склонение",g:"I скл., f"},
-{t:"vena, ae f",tr:"вена",d:"vena, venae f — I склонение",g:"I скл., f"},
-{t:"vertebra, ae f",tr:"позвонок",d:"vertebra, vertebrae f — I склонение",g:"I скл., f"},
-{t:"vesica, ae f",tr:"пузырь",d:"vesica, vesicae f — I склонение",g:"I скл., f"},{t:"angulus, i m",tr:"угол",d:"angulus, anguli m — II склонение",g:"II скл., m"},
-{t:"digitus, i m",tr:"палец",d:"digitus, digiti m — II склонение",g:"II скл., m"},
-{t:"fundus, i m",tr:"дно",d:"fundus, fundi m — II склонение",g:"II скл., m"},
-{t:"gyrus, i m",tr:"извилина",d:"gyrus, gyri m — II склонение",g:"II скл., m"},
-{t:"humerus, i m",tr:"плечевая кость",d:"humerus, humeri m — II склонение",g:"II скл., m"},
-{t:"lobus, i m",tr:"доля",d:"lobus, lobi m — II склонение",g:"II скл., m"},
-{t:"musculus, i m",tr:"мышца",d:"musculus, musculi m — II склонение",g:"II скл., m"},
-{t:"nasus, i m",tr:"нос",d:"nasus, nasi m — II склонение",g:"II скл., m"},
-{t:"nervus, i m",tr:"нерв",d:"nervus, nervi m — II склонение",g:"II скл., m"},
-{t:"oculus, i m",tr:"глаз",d:"oculus, oculi m — II склонение",g:"II скл., m"},
-{t:"radius, i m",tr:"лучевая кость",d:"radius, radii m — II склонение",g:"II скл., m"},
-{t:"ramus, i m",tr:"ветвь",d:"ramus, rami m — II склонение",g:"II скл., m"},
-{t:"sulcus, i m",tr:"борозда",d:"sulcus, sulci m — II склонение",g:"II скл., m"},
-{t:"uterus, i m",tr:"матка",d:"uterus, uteri m — II склонение",g:"II скл., m"},
-{t:"ventriculus, i m",tr:"желудочек",d:"ventriculus, ventriculi m — II склонение",g:"II скл., m"},
-{t:"acromion, i n",tr:"акромион",d:"acromion, acromii n — II склонение",g:"II скл., n"},
-{t:"antebrachium, i n",tr:"предплечье",d:"antebrachium, antebrachii n — II склонение",g:"II скл., n"},
-{t:"atrium, i n",tr:"предсердие",d:"atrium, atrii n — II склонение",g:"II скл., n"},
-{t:"brachium, i n",tr:"плечо",d:"brachium, brachii n — II склонение",g:"II скл., n"},
-{t:"bulbus, i m",tr:"луковица",d:"bulbus, bulbi m — II склонение",g:"II скл., m"},
-{t:"cavum, i n",tr:"полость",d:"cavum, cavi n — II склонение",g:"II скл., n"},
-{t:"cerebellum, i n",tr:"мозжечок",d:"cerebellum, cerebelli n — II склонение",g:"II скл., n"},
-{t:"cerebrum, i n",tr:"большой мозг",d:"cerebrum, cerebri n — II склонение",g:"II скл., n"},
-{t:"collum, i n",tr:"шея, шейка",d:"collum, colli n — II склонение",g:"II скл., n"},
-{t:"cranium, i n",tr:"череп",d:"cranium, cranii n — II склонение",g:"II скл., n"},
-{t:"dorsum, i n",tr:"спина, тыл",d:"dorsum, dorsi n — II склонение",g:"II скл., n"},
-{t:"ganglion, i n",tr:"нервный узел",d:"ganglion, ganglii n — II склонение",g:"II скл., n"},
-{t:"labium, i n",tr:"губа",d:"labium, labii n — II склонение",g:"II скл., n"},
-{t:"ligamentum, i n",tr:"связка",d:"ligamentum, ligamenti n — II склонение",g:"II скл., n"},
-{t:"olecranon, i n",tr:"локтевой отросток",d:"olecranon, olecrani n — II склонение",g:"II скл., n"},
-{t:"ostium, i n",tr:"устье",d:"ostium, ostii n — II склонение",g:"II скл., n"},
-{t:"septum, i n",tr:"перегородка",d:"septum, septi n — II склонение",g:"II скл., n"},
-{t:"sternum, i n",tr:"грудина",d:"sternum, sterni n — II склонение",g:"II скл., n"},
-{t:"tuberculum, i n",tr:"бугорок",d:"tuberculum, tuberculi n — II склонение",g:"II скл., n"},
-{t:"gaster, tris f",tr:"желудок",d:"gaster, gastris f — III склонение",g:"III скл., f"},
-{t:"arcus, us m",tr:"дуга",d:"arcus, us m — IV склонение",g:"IV скл., m"},
-{t:"cornu, us n",tr:"рог",d:"cornu, us n — IV склонение",g:"IV скл., n"},
-{t:"ductus, us m",tr:"проток",d:"ductus, us m — IV склонение",g:"IV скл., m"},
-{t:"genu, us n",tr:"колено",d:"genu, us n — IV склонение",g:"IV скл., n"},
-{t:"manus, us f",tr:"рука",d:"manus, us f — IV склонение",g:"IV скл., f"},
-{t:"plexus, us m",tr:"сплетение",d:"plexus, us m — IV склонение",g:"IV скл., m"},
-{t:"processus, us m",tr:"отросток",d:"processus, us m — IV склонение",g:"IV скл., m"},
-{t:"sinus, us m",tr:"пазуха",d:"sinus, us m — IV склонение",g:"IV скл., m"},
-{t:"facies, ei f",tr:"лицо, поверхность",d:"facies, ei f — V склонение",g:"V скл., f"},
-{t:"cardiacus, a, um",tr:"сердечный",d:"cardiacus, a, um",g:"Прил. I гр."},
-{t:"cavernosus, a, um",tr:"пещеристый",d:"cavernosus, a, um",g:"Прил. I гр."},
-{t:"cavus, a, um",tr:"полый",d:"cavus, a, um",g:"Прил. I гр."},
-{t:"cutaneus, a, um",tr:"кожный",d:"cutaneus, a, um",g:"Прил. I гр."},
-{t:"dexter, tra, trum",tr:"правый",d:"dexter, tra, trum",g:"Прил. I гр."},
-{t:"fibrosus, a, um",tr:"фиброзный",d:"fibrosus, a, um",g:"Прил. I гр."},
-{t:"gastricus, a, um",tr:"желудочный",d:"gastricus, a, um",g:"Прил. I гр."},
-{t:"hepaticus, a, um",tr:"печёночный",d:"hepaticus, a, um",g:"Прил. I гр."},
-{t:"hyoideus, a, um",tr:"подъязычный (кость)",d:"hyoideus, a, um",g:"Прил. I гр."},
-{t:"hypoglossus, a, um",tr:"подъязычный (нерв)",d:"hypoglossus, a, um",g:"Прил. I гр."},
-{t:"internus, a, um",tr:"внутренний",d:"internus, a, um",g:"Прил. I гр."},
-{t:"ischiadicus, a, um",tr:"седалищный",d:"ischiadicus, a, um",g:"Прил. I гр."},
-{t:"laryngeus, a, um",tr:"гортанный",d:"laryngeus, a, um",g:"Прил. I гр."},
-{t:"longus, a, um",tr:"длинный",d:"longus, a, um",g:"Прил. I гр."},
-{t:"mastoideus, a, um",tr:"сосцевидный",d:"mastoideus, a, um",g:"Прил. I гр."},
-{t:"medianus, a, um",tr:"срединный",d:"medianus, a, um",g:"Прил. I гр."},
-{t:"medius, a, um",tr:"средний",d:"medius, a, um",g:"Прил. I гр."},
-{t:"obliquus, a, um",tr:"косой",d:"obliquus, a, um",g:"Прил. I гр."},
-{t:"osseus, a, um",tr:"костный",d:"osseus, a, um",g:"Прил. I гр."},
-{t:"palatinus, a, um",tr:"нёбный",d:"palatinus, a, um",g:"Прил. I гр."},
-{t:"petrosus, a, um",tr:"каменистый",d:"petrosus, a, um",g:"Прил. I гр."},
-{t:"pharyngeus, a, um",tr:"глоточный",d:"pharyngeus, a, um",g:"Прил. I гр."},
-{t:"profundus, a, um",tr:"глубокий",d:"profundus, a, um",g:"Прил. I гр."},
-{t:"pterygoideus, a, um",tr:"крыловидный",d:"pterygoideus, a, um",g:"Прил. I гр."},
-{t:"rectus, a, um",tr:"прямой",d:"rectus, a, um",g:"Прил. I гр."},
-{t:"sinister, tra, trum",tr:"левый",d:"sinister, tra, trum",g:"Прил. I гр."},
-{t:"thoracicus, a, um",tr:"грудной",d:"thoracicus, a, um",g:"Прил. I гр."},
-{t:"thyreoideus, a, um",tr:"щитовидный",d:"thyreoideus, a, um",g:"Прил. I гр."},
-{t:"transversus, a, um",tr:"поперечный",d:"transversus, a, um",g:"Прил. I гр."},
-{t:"venosus, a, um",tr:"венозный",d:"venosus, a, um",g:"Прил. I гр."},
-{t:"zygomaticus, a, um",tr:"скуловой",d:"zygomaticus, a, um",g:"Прил. I гр."},
-{t:"articularis, e",tr:"суставной",d:"articularis, e",g:"Прил. II гр."},
-{t:"cervicalis, e",tr:"шейный",d:"cervicalis, e",g:"Прил. II гр."},
-{t:"communis, e",tr:"общий",d:"communis, e",g:"Прил. II гр."},
-{t:"frontalis, e",tr:"лобный",d:"frontalis, e",g:"Прил. II гр."},
-{t:"intermuscularis, e",tr:"межмышечный",d:"intermuscularis, e",g:"Прил. II гр."},
-{t:"lateralis, e",tr:"боковой",d:"lateralis, e",g:"Прил. II гр."},
-{t:"longitudinalis, e",tr:"продольный",d:"longitudinalis, e",g:"Прил. II гр."},
-{t:"lumbalis, e",tr:"поясничный",d:"lumbalis, e",g:"Прил. II гр."},
-{t:"medialis, e",tr:"медиальный",d:"medialis, e",g:"Прил. II гр."},
-{t:"nasalis, e",tr:"носовой",d:"nasalis, e",g:"Прил. II гр."},
-{t:"occipitalis, e",tr:"затылочный",d:"occipitalis, e",g:"Прил. II гр."},
-{t:"palmaris, e",tr:"ладонный",d:"palmaris, e",g:"Прил. II гр."},
-{t:"parietalis, e",tr:"теменной",d:"parietalis, e",g:"Прил. II гр."},
-{t:"pectoralis, e",tr:"грудной",d:"pectoralis, e",g:"Прил. II гр."},
-{t:"pulmonalis, e",tr:"лёгочный",d:"pulmonalis, e",g:"Прил. II гр."},
-{t:"sacralis, e",tr:"крестцовый",d:"sacralis, e",g:"Прил. II гр."},
-{t:"sphenoidalis, e",tr:"клиновидный",d:"sphenoidalis, e",g:"Прил. II гр."},
-{t:"superficialis, e",tr:"поверхностный",d:"superficialis, e",g:"Прил. II гр."},
-{t:"sublingualis, e",tr:"подъязычный",d:"sublingualis, e",g:"Прил. II гр."},
-{t:"temporalis, e",tr:"височный",d:"temporalis, e",g:"Прил. II гр."},
-{t:"vertebralis, e",tr:"позвоночный",d:"vertebralis, e",g:"Прил. II гр."},
-{t:"anterior, ius",tr:"передний",d:"anterior, ius",g:"Сравн. степень"},
-{t:"inferior, ius",tr:"нижний",d:"inferior, ius",g:"Сравн. степень"},
-{t:"major, us",tr:"большой",d:"major, us",g:"Сравн. степень"},
-{t:"minor, us",tr:"малый",d:"minor, us",g:"Сравн. степень"},
-{t:"posterior, ius",tr:"задний",d:"posterior, ius",g:"Сравн. степень"},
-{t:"superior, ius",tr:"верхний",d:"superior, ius",g:"Сравн. степень"},
-{t:"bulbus oculi",tr:"глазное яблоко",d:"bulbus (m) + oculus (m, gen.)",g:"Словосочетание"},
-{t:"medulla spinalis",tr:"спинной мозг",d:"medulla (f) + spinalis, e",g:"Словосочетание"},
-{t:"vesica urinaria",tr:"мочевой пузырь",d:"vesica (f) + urinarius, a, um",g:"Словосочетание"}
-];
-
-const key=c=>c.t+"|"+c.tr;
+<div class="modal-body" id="modalBody"></div>
+<div class="stats" id="stats"></div>
+</div>
+</div>
+<div class="modal" id="browseModal" onclick="if(event.target===this)closeBrowse()">
+<div class="modal-content">
+<div class="modal-header"><h2>📖 Все слова</h2><button class="close-btn" onclick="closeBrowse()">×</button></div>
+<div class="modal-body" id="browseBody"></div>
+<div class="stats" id="browseStats"></div>
+</div>
+</div>
+<script>const allCards=[
+{t:"ala, ae f",tr:"крыло",d:"ala, alae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"aorta, ae f",tr:"аорта",d:"aorta, aortae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"arteria, ae f",tr:"артерия",d:"arteria, arteriae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"clavicula, ae f",tr:"ключица",d:"clavicula, claviculae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"concha, ae f",tr:"раковина",d:"concha, conchae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"costa, ae f",tr:"ребро",d:"costa, costae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"crista, ae f",tr:"гребень",d:"crista, cristae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"fissura, ae f",tr:"щель",d:"fissura, fissurae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"fractura, ae f",tr:"перелом",d:"fractura, fracturae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"fossa, ae f",tr:"ямка удлинённой формы",d:"fossa, fossae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"fovea, ae f",tr:"ямка округлой формы",d:"fovea, foveae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"glandula, ae f",tr:"железа",d:"glandula, glandulae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"incisura, ae f",tr:"вырезка",d:"incisura, incisurae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"lamina, ae f",tr:"пластинка",d:"lamina, laminae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"lingua, ae f",tr:"язык",d:"lingua, linguae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"linea, ae f",tr:"линия",d:"linea, lineae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"mandibula, ae f",tr:"нижняя челюсть",d:"mandibula, mandibulae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"maxilla, ae f",tr:"верхняя челюсть",d:"maxilla, maxillae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"medulla, ae f",tr:"мозг, мозговое вещество",d:"medulla, medullae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"plica, ae f",tr:"складка",d:"plica, plicae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"scapula, ae f",tr:"лопатка",d:"scapula, scapulae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"spina, ae f",tr:"ость, шип",d:"spina, spinae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"sutura, ae f",tr:"шов",d:"sutura, suturae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"tibia, ae f",tr:"большеберцовая кость",d:"tibia, tibiae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"ulna, ae f",tr:"локтевая кость",d:"ulna, ulnae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"vagina, ae f",tr:"влагалище",d:"vagina, vaginae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"vena, ae f",tr:"вена",d:"vena, venae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"vertebra, ae f",tr:"позвонок",d:"vertebra, vertebrae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"vesica, ae f",tr:"пузырь",d:"vesica, vesicae f — I склонение",g:"I скл., f",deck:"min1"},
+{t:"angulus, i m",tr:"угол",d:"angulus, anguli m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"digitus, i m",tr:"палец",d:"digitus, digiti m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"fundus, i m",tr:"дно",d:"fundus, fundi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"gyrus, i m",tr:"извилина",d:"gyrus, gyri m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"humerus, i m",tr:"плечевая кость",d:"humerus, humeri m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"lobus, i m",tr:"доля",d:"lobus, lobi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"musculus, i m",tr:"мышца",d:"musculus, musculi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"nasus, i m",tr:"нос",d:"nasus, nasi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"nervus, i m",tr:"нерв",d:"nervus, nervi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"oculus, i m",tr:"глаз",d:"oculus, oculi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"radius, i m",tr:"лучевая кость",d:"radius, radii m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"ramus, i m",tr:"ветвь",d:"ramus, rami m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"sulcus, i m",tr:"борозда",d:"sulcus, sulci m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"uterus, i m",tr:"матка",d:"uterus, uteri m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"ventriculus, i m",tr:"желудочек",d:"ventriculus, ventriculi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"acromion, i n",tr:"акромион",d:"acromion, acromii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"antebrachium, i n",tr:"предплечье",d:"antebrachium, antebrachii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"atrium, i n",tr:"предсердие",d:"atrium, atrii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"brachium, i n",tr:"плечо",d:"brachium, brachii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"bulbus, i m",tr:"луковица",d:"bulbus, bulbi m — II склонение",g:"II скл., m",deck:"min1"},
+{t:"cavum, i n",tr:"полость",d:"cavum, cavi n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"cerebellum, i n",tr:"мозжечок",d:"cerebellum, cerebelli n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"cerebrum, i n",tr:"большой мозг",d:"cerebrum, cerebri n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"collum, i n",tr:"шея, шейка",d:"collum, colli n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"cranium, i n",tr:"череп",d:"cranium, cranii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"dorsum, i n",tr:"спина, тыл",d:"dorsum, dorsi n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"ganglion, i n",tr:"нервный узел",d:"ganglion, ganglii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"labium, i n",tr:"губа",d:"labium, labii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"ligamentum, i n",tr:"связка",d:"ligamentum, ligamenti n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"olecranon, i n",tr:"локтевой отросток",d:"olecranon, olecrani n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"ostium, i n",tr:"устье",d:"ostium, ostii n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"septum, i n",tr:"перегородка",d:"septum, septi n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"sternum, i n",tr:"грудина",d:"sternum, sterni n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"tuberculum, i n",tr:"бугорок",d:"tuberculum, tuberculi n — II склонение",g:"II скл., n",deck:"min1"},
+{t:"gaster, tris f",tr:"желудок",d:"gaster, gastris f — III склонение",g:"III скл., f",deck:"min2"},
+{t:"arcus, us m",tr:"дуга",d:"arcus, us m — IV склонение",g:"IV скл., m",deck:"min2"},
+{t:"cornu, us n",tr:"рог",d:"cornu, us n — IV склонение",g:"IV скл., n",deck:"min2"},
+{t:"ductus, us m",tr:"проток",d:"ductus, us m — IV склонение",g:"IV скл., m",deck:"min2"},
+{t:"genu, us n",tr:"колено",d:"genu, us n — IV склонение",g:"IV скл., n",deck:"min2"},
+{t:"manus, us f",tr:"рука",d:"manus, us f — IV склонение",g:"IV скл., f",deck:"min2"},
+{t:"plexus, us m",tr:"сплетение",d:"plexus, us m — IV склонение",g:"IV скл., m",deck:"min2"},
+{t:"processus, us m",tr:"отросток",d:"processus, us m — IV склонение",g:"IV скл., m",deck:"min2"},
+{t:"sinus, us m",tr:"пазуха",d:"sinus, us m — IV склонение",g:"IV скл., m",deck:"min2"},
+{t:"facies, ei f",tr:"лицо, поверхность",d:"facies, ei f — V склонение",g:"V скл., f",deck:"min2"},
+{t:"bulbus oculi",tr:"глазное яблоко",d:"bulbus (m) + oculus (m, gen.)",g:"Словосочетание",deck:"min2"},
+{t:"medulla spinalis",tr:"спинной мозг",d:"medulla (f) + spinalis, e",g:"Словосочетание",deck:"min2"},
+{t:"vesica urinaria",tr:"мочевой пузырь",d:"vesica (f) + urinarius, a, um",g:"Словосочетание",deck:"min2"},
+{t:"cardiacus, a, um",tr:"сердечный",d:"cardiacus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"cavernosus, a, um",tr:"пещеристый",d:"cavernosus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"cavus, a, um",tr:"полый",d:"cavus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"cutaneus, a, um",tr:"кожный",d:"cutaneus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"dexter, tra, trum",tr:"правый",d:"dexter, tra, trum",g:"Прил. I гр.",deck:"min3"},
+{t:"fibrosus, a, um",tr:"фиброзный",d:"fibrosus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"gastricus, a, um",tr:"желудочный",d:"gastricus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"hepaticus, a, um",tr:"печёночный",d:"hepaticus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"hyoideus, a, um",tr:"подъязычный (кость)",d:"hyoideus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"hypoglossus, a, um",tr:"подъязычный (нерв)",d:"hypoglossus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"internus, a, um",tr:"внутренний",d:"internus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"ischiadicus, a, um",tr:"седалищный",d:"ischiadicus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"laryngeus, a, um",tr:"гортанный",d:"laryngeus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"longus, a, um",tr:"длинный",d:"longus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"mastoideus, a, um",tr:"сосцевидный",d:"mastoideus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"medianus, a, um",tr:"срединный",d:"medianus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"medius, a, um",tr:"средний",d:"medius, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"obliquus, a, um",tr:"косой",d:"obliquus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"osseus, a, um",tr:"костный",d:"osseus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"palatinus, a, um",tr:"нёбный",d:"palatinus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"petrosus, a, um",tr:"каменистый",d:"petrosus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"pharyngeus, a, um",tr:"глоточный",d:"pharyngeus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"profundus, a, um",tr:"глубокий",d:"profundus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"pterygoideus, a, um",tr:"крыловидный",d:"pterygoideus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"rectus, a, um",tr:"прямой",d:"rectus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"sinister, tra, trum",tr:"левый",d:"sinister, tra, trum",g:"Прил. I гр.",deck:"min3"},
+{t:"thoracicus, a, um",tr:"грудной",d:"thoracicus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"thyreoideus, a, um",tr:"щитовидный",d:"thyreoideus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"transversus, a, um",tr:"поперечный",d:"transversus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"venosus, a, um",tr:"венозный",d:"venosus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"zygomaticus, a, um",tr:"скуловой",d:"zygomaticus, a, um",g:"Прил. I гр.",deck:"min3"},
+{t:"articularis, e",tr:"суставной",d:"articularis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"cervicalis, e",tr:"шейный",d:"cervicalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"communis, e",tr:"общий",d:"communis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"frontalis, e",tr:"лобный",d:"frontalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"intermuscularis, e",tr:"межмышечный",d:"intermuscularis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"lateralis, e",tr:"боковой",d:"lateralis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"longitudinalis, e",tr:"продольный",d:"longitudinalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"lumbalis, e",tr:"поясничный",d:"lumbalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"medialis, e",tr:"медиальный",d:"medialis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"nasalis, e",tr:"носовой",d:"nasalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"occipitalis, e",tr:"затылочный",d:"occipitalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"palmaris, e",tr:"ладонный",d:"palmaris, e",g:"Прил. II гр.",deck:"min3"},
+{t:"parietalis, e",tr:"теменной",d:"parietalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"pectoralis, e",tr:"грудной",d:"pectoralis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"pulmonalis, e",tr:"лёгочный",d:"pulmonalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"sacralis, e",tr:"крестцовый",d:"sacralis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"sphenoidalis, e",tr:"клиновидный",d:"sphenoidalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"superficialis, e",tr:"поверхностный",d:"superficialis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"sublingualis, e",tr:"подъязычный",d:"sublingualis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"temporalis, e",tr:"височный",d:"temporalis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"vertebralis, e",tr:"позвоночный",d:"vertebralis, e",g:"Прил. II гр.",deck:"min3"},
+{t:"anterior, ius",tr:"передний",d:"anterior, ius",g:"Сравн. степень",deck:"min3"},
+{t:"inferior, ius",tr:"нижний",d:"inferior, ius",g:"Сравн. степень",deck:"min3"},
+{t:"major, us",tr:"большой",d:"major, us",g:"Сравн. степень",deck:"min3"},
+{t:"minor, us",tr:"малый",d:"minor, us",g:"Сравн. степень",deck:"min3"},
+{t:"posterior, ius",tr:"задний",d:"posterior, ius",g:"Сравн. степень",deck:"min3"},
+{t:"superior, ius",tr:"верхний",d:"superior, ius",g:"Сравн. степень",deck:"min3"}
+];const key=c=>c.t+"|"+c.tr;
 let knownSet=new Set();
+let currentDeck="all";
 let deck=[];
 let idx=0;
 let flipped=false;
 
-function saveState(){try{localStorage.setItem('latin_known',JSON.stringify([...knownSet]))}catch(e){}}
-function loadState(){try{const s=localStorage.getItem('latin_known');if(s)knownSet=new Set(JSON.parse(s))}catch(e){}}
-function buildDeck(){deck=allCards.filter(c=>!knownSet.has(key(c)));idx=0;flipped=false}
+function saveState(){try{localStorage.setItem('latin_known',JSON.stringify([...knownSet]));localStorage.setItem('latin_deck',currentDeck);localStorage.setItem('latin_theme',document.body.classList.contains('dark')?'dark':'light')}catch(e){}}
+function loadState(){
+try{
+const s=localStorage.getItem('latin_known');
+if(s)knownSet=new Set(JSON.parse(s));
+const d=localStorage.getItem('latin_deck');
+if(d)currentDeck=d;
+const t=localStorage.getItem('latin_theme');
+if(t==='dark')document.body.classList.add('dark');
+}catch(e){}
+}
+function getDeckCards(){return currentDeck==='all'?allCards:allCards.filter(c=>c.deck===currentDeck)}
+function buildDeck(){deck=getDeckCards().filter(c=>!knownSet.has(key(c)));idx=0;flipped=false}
 
 const cardEl=document.getElementById('card');
 const frontTrEl=document.getElementById('frontTranslation');
@@ -238,57 +289,82 @@ const counterEl=document.getElementById('counter');
 const progressEl=document.getElementById('progress');
 
 function render(){
-  if(deck.length===0){
-    frontTrEl.textContent="🎉 Все карточки выучены!";
-    backTermEl.textContent="";
-    backDeclEl.textContent="Нажми «Списки», чтобы увидеть все известные";
-    counterEl.textContent="0 / 0";
-    progressEl.style.width='100%';
-    if(flipped){cardEl.classList.remove('flipped');flipped=false}
-    return;
-  }
-  if(idx>=deck.length)idx=0;
-  const c=deck[idx];
-  frontTrEl.textContent=c.tr;
-  backTermEl.textContent=c.t;
-  backDeclEl.innerHTML=c.d+`<div style="margin-top:10px;font-size:0.8rem;color:#d81b60;font-style:normal;font-weight:600">${c.g}</div>`;
-  counterEl.textContent=`${idx+1} / ${deck.length}`;
-  progressEl.style.width=((idx+1)/deck.length*100)+'%';
-  if(flipped){cardEl.classList.remove('flipped');flipped=false}
+const base=getDeckCards();
+if(deck.length===0){
+frontTrEl.textContent="🎉 Все карточки выучены!";
+backTermEl.textContent="";
+backDeclEl.textContent="Выбери другую колоду или нажми «Списки»";
+counterEl.textContent="0 / 0";
+progressEl.style.width='100%';
+if(flipped){cardEl.classList.remove('flipped');flipped=false}
+return;
+}
+if(idx>=deck.length)idx=0;
+const c=deck[idx];
+frontTrEl.textContent=c.tr;
+backTermEl.textContent=c.t;
+backDeclEl.innerHTML=c.d+`<div style="margin-top:10px;font-size:0.8rem;color:var(--counter);font-style:normal;font-weight:600">${c.g}</div>`;
+counterEl.textContent=`${idx+1} / ${deck.length}`;
+progressEl.style.width=((idx+1)/deck.length*100)+'%';
+if(flipped){cardEl.classList.remove('flipped');flipped=false}
 }
 function flip(){if(deck.length===0)return;flipped=!flipped;cardEl.classList.toggle('flipped',flipped)}
 function next(){if(deck.length===0)return;idx=(idx+1)%deck.length;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
 function prev(){if(deck.length===0)return;idx=(idx-1+deck.length)%deck.length;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
 function markKnown(){if(deck.length===0)return;const c=deck[idx];knownSet.add(key(c));saveState();deck.splice(idx,1);if(idx>=deck.length)idx=0;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
 function shuffle(){for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}idx=0;if(flipped){cardEl.classList.remove('flipped');flipped=false}setTimeout(render,50)}
+function changeDeck(){currentDeck=document.getElementById('deckSelect').value;saveState();buildDeck();render()}
+
+function toggleTheme(){
+document.body.classList.toggle('dark');
+document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+saveState();
+}
 
 let currentTab='unknown';
 function openModal(){document.getElementById('modal').classList.add('open');renderModal()}
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function switchTab(tab){currentTab=tab;document.getElementById('tabUnknown').classList.toggle('active',tab==='unknown');document.getElementById('tabKnown').classList.toggle('active',tab==='known');renderModal()}
 function renderModal(){
-  const knownList=allCards.filter(c=>knownSet.has(key(c)));
-  const unknownList=allCards.filter(c=>!knownSet.has(key(c)));
-  document.getElementById('cntKnown').textContent=knownList.length;
-  document.getElementById('cntUnknown').textContent=unknownList.length;
-  const list=currentTab==='known'?knownList:unknownList;
-  const body=document.getElementById('modalBody');
-  if(list.length===0){
-    body.innerHTML=`<div class="empty-msg">${currentTab==='known'?'Пока ничего не выучено 💪':'Все карточки выучены! 🎉'}</div>`;
-  }else{
-    body.innerHTML='<ul>'+list.map(c=>`<li><div class="ru">${c.tr}</div><div class="la">${c.t} — ${c.d} <span style="color:#d81b60;font-weight:600">[${c.g}]</span></div></li>`).join('')+'</ul>';
-  }
-  document.getElementById('stats').textContent=`Всего: ${allCards.length} · Знаю: ${knownList.length} · Осталось: ${unknownList.length}`;
+const base=getDeckCards();
+const knownList=base.filter(c=>knownSet.has(key(c)));
+const unknownList=base.filter(c=>!knownSet.has(key(c)));
+document.getElementById('cntKnown').textContent=knownList.length;
+document.getElementById('cntUnknown').textContent=unknownList.length;
+const list=currentTab==='known'?knownList:unknownList;
+const body=document.getElementById('modalBody');
+if(list.length===0){
+body.innerHTML=`<div class="empty-msg">${currentTab==='known'?'Пока ничего не выучено 💪':'Все карточки выучены! 🎉'}</div>`;
+}else{
+body.innerHTML='<ul>'+list.map(c=>`<li><div class="ru">${c.tr}</div><div class="la">${c.t} — ${c.d} <span style="color:var(--counter);font-weight:600">[${c.g}]</span></div></li>`).join('')+'</ul>';
+}
+document.getElementById('stats').textContent=`В колоде: ${base.length} · Знаю: ${knownList.length} · Осталось: ${unknownList.length}`;
+}
+
+function openBrowse(){document.getElementById('browseModal').classList.add('open');renderBrowse()}
+function closeBrowse(){document.getElementById('browseModal').classList.remove('open')}
+function renderBrowse(){
+const base=getDeckCards();
+const body=document.getElementById('browseBody');
+if(base.length===0){body.innerHTML='<div class="empty-msg">Пусто</div>';return}
+body.innerHTML='<ul>'+base.map(c=>{
+const known=knownSet.has(key(c));
+return `<li style="border-left-color:${known?'#4caf50':'var(--li-border)'}"><div class="ru">${c.tr} ${known?'✅':''}</div><div class="la">${c.t} — ${c.d} <span style="color:var(--counter);font-weight:600">[${c.g}]</span></div></li>`;
+}).join('')+'</ul>';
+document.getElementById('browseStats').textContent=`Всего в колоде: ${base.length}`;
 }
 
 document.addEventListener('keydown',e=>{
-  if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')closeModal();return}
-  if(e.key==='ArrowRight')next();
-  else if(e.key==='ArrowLeft')prev();
-  else if(e.key===' '){e.preventDefault();flip()}
+if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')closeModal();return}
+if(document.getElementById('browseModal').classList.contains('open')){if(e.key==='Escape')closeBrowse();return}
+if(e.key==='ArrowRight')next();
+else if(e.key==='ArrowLeft')prev();
+else if(e.key===' '){e.preventDefault();flip()}
 });
 
 loadState();
+document.getElementById('deckSelect').value=currentDeck;
+document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'☀️':'🌙';
 buildDeck();
 render();
 </script>
